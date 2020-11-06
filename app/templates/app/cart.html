@@ -1,0 +1,52 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+<table>
+    <tr>
+        <td>Product</td>
+        <td>Quantity</td>
+        <td>Unit Price</td>
+        <td>Total</td>
+        <td></td>
+    </tr>
+    {% for obj in cartItems %}
+<tr>
+    <td>
+        <img src="{{ obj.product.image.url }}" height="100" />
+    </td>
+    <td>
+        <form method="post" action="/update_cart_item">
+            {% csrf_token %}
+            <input type="hidden" name="cart_item_id" value="{{ obj.id }}" />
+            <input type="text" name="quantity" value="{{obj.quantity}}" /><button>Save</button>
+        </form>
+    </td>
+    <td>${{ obj.unit_price }}</td>
+    <td>
+        ${{ obj.total }}
+    </td>
+    <td>
+        <form method="post" action="/remove_cart_item">
+            {% csrf_token %}
+            <input type="hidden" name="cart_item_id" value="{{ obj.id }}" />
+            <button type="submit">Remove</button>
+        </form>
+    </td>
+    <td>
+        <form method="post" action="/update_cart_item">
+            {% csrf_token %}
+            <input type="hidden" name="cart_item_id" value="{{ obj.id }}" />
+        </form>
+    </td>
+</tr>
+    {% endfor %}
+<tr>
+    <td colspan="3">
+        Grand Total:
+    </td>
+    <td>${{ grand_total }}</td>
+    <td></td>
+</tr>
+</table>
+<a href="/checkout" class="btn">Checkout</a>
+{% endblock %}

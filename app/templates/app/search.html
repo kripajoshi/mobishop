@@ -1,0 +1,20 @@
+﻿{% extends "app/layout.html" %}
+{% block content %}
+<h2>Searching for: {{ search }}</h2>
+<div class="row">
+    {% for obj in products %}
+    <div class="col-md-4" style="height:300px">
+        <div>
+            <a href="/products/{{ obj.id }}">
+                <img src="{{ obj.image.url}}" height="150" />
+            </a>
+        </div>
+        <span>{{ obj.title|truncatechars:90 }}</span>
+        <h4>${{ obj.unit_price }}</h4>
+        <p><a class="btn btn-default" href="/products/{{ obj.id }}">Read more &raquo;</a></p>
+    </div>
+    {% endfor %}
+</div>
+
+
+{% endblock %}
