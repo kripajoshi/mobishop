@@ -1,0 +1,31 @@
+﻿{% extends "app/layout.html" %}
+
+{% block content %}
+{% for order in orders %}
+{% for orderitem in order.orderitem_set.all %}
+<div class="row">
+    <div class="col col-4"><img src="{{orderitem.product_image}}" width="200"/></div>
+    <div class="col col-8">
+        <div>
+         {{orderitem.product_title}}
+        </div>
+        <div>
+         {{orderitem.quantity}} @
+           $ {{orderitem.unit_price}}
+        </div>
+        <div>
+          total: $ {{orderitem.total}}
+        </div>
+        <div>
+           ordered on:{{order.created_on}}
+        </div>
+        <div>
+            order number:{{order.id}}
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endfor %}
+
+
+{% endblock %}

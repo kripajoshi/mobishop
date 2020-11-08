@@ -1,0 +1,45 @@
+﻿{% extends "app/layout.html" %}
+
+{% block content %}
+<form method="post" action="/process_checkout">
+    <div class="row">
+        <div class="col col-6">
+            <h3>Ship to</h3>
+            {% csrf_token %}
+            <div><label>First name</label></div>
+            <input type="text" name="first_name" value="{{a.first_name}}"  />
+            <div><label>Last name</label></div>
+            <input type="text" name="last_name" value="{{a.last_name}}"  />
+             <div><label>Address line 1</label></div>
+            <input type="text" name="address_line_1" placeholder="street_address" value="{{a.address_line_1}}" />
+             <div><label>Address line 2</label></div>
+            <input type="text" name="address_line_2" placeholder="appartment_no,suite,unit,building,floor" value="{{a.address_line_2}}" />
+            <div><label>City</label></div>
+            <input type="text" name="city" value="{{a.city}}" />
+            <div><label>Province</label></div>
+            <input type="text" name="province" value="{{a.province}}" />
+            <div><label>Postal code</label></div>
+            <input type="text" name="postal_code" value="{{a.postal_code}}" />
+            <div><label>Phone Number</label></div>
+            <input type="text" name="phone_number" value="{{a.phone_number}}" />
+            <div><button type="Submit" class="btn btn-outline-success my-2 my-sm-0">Submit</button></div>
+        </div>
+        <div class="col col-6">
+            <h3>Payment method</h3>
+            <div>
+                <div><label>Name on card:</label></div>
+                <input type="text" />
+            </div>
+            <div>
+                <div><label>Card Number:</label></div>
+                <input type="text" />
+            </div>
+            <div>
+                <div><label>Expiration date:</label></div>
+                <input type="text" placeholder="MM" /> <input type="text" placeholder="YYYY" />
+            </div>
+        </div>
+    </div>
+</form>
+
+{% endblock %}

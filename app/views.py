@@ -5,13 +5,13 @@ Definition of views.
 from datetime import datetime
 from django.shortcuts import render, redirect
 from django.http import HttpRequest
-from app.models import Product, Cart, CartItem
+from app.models import Product, Cart, CartItem, Address, Order, OrderItem
 from django.db.models import Sum
 
 def home(request):
     """Renders the home page."""
     assert isinstance(request, HttpRequest)
-    products = Product.objects.all()
+    products = Product.objects.filter(is_featured=True)
     return render(
         request,
         'app/index.html',
@@ -136,5 +136,74 @@ def update_cart_item(request):
     cartItem.save()
     return redirect(cart)
 
-def checkout(request,id):
-   return render(request, )
+def checkout(request):
+   addresses = Address.objects.filter(user_id=request.user.id)
+   if addresses.exists():
+       address = addresses[0]
+   else:
+       address = Address()   
+   return render(request,'app/checkout.html', { 'a': address})
+
+def checkout_success(request):
+   return render(request,'app/checkout_success.html')
+
+def process_checkout(request):
+    addresses = Address.objects.filter(user_id=request.user.id)
+    if addresses.exists():
+       address=addresses[0]
+       address.first_name=request.POST.get('first_name')
+       address.last_name= request.POST.get('last_name')
+       address.address_line_1= request.POST.get('address_line_1')
+       address.address_line_2= request.POST.get('address_line_2')
+       address.city= request.POST.get('city')
+       address.province= request.POST.get('province')
+       address.postal_code= request.POST.get('postal_code')
+       address.phone_number = request.POST.get('phone_number')
+    else:
+        address= Address(
+            first_name=request.POST.get('first_name'),
+            last_name= request.POST.get('last_name'),
+            address_line_1= request.POST.get('address_line_1'),
+            address_line_2= request.POST.get('address_line_2'),
+            city= request.POST.get('city'),
+            province= request.POST.get('province'),
+            postal_code= request.POST.get('postal_code'),
+            phone_number = request.POST.get('phone_number'),
+            user_id = request.user.id
+        )
+    address.save()
+
+    carts = Cart.objects.filter(user_id=request.user.id).order_by('-created_on')
+    if carts.exists():
+       cart=carts[0]
+       order = Order(user_id=cart.user_id)
+       order.save()
+       for cartItem in cart.cartitem_set.all():
+           orderItem = OrderItem(
+               product_id = cartItem.product.id,
+               product_title  = cartItem.product.title,
+               product_image = cartItem.product.image.url,
+               order = order,
+               unit_price = cartItem.unit_price,
+               quantity = cartItem.quantity,
+               total = cartItem.total
+           )
+           orderItem.save()
+       cart.delete()
+
+    return redirect(checkout_success)
+
+def myaccount(request):
+   return render(request,'app/myaccount.html')
+
+def order_history(request):
+   orders = Order.objects.filter(user_id=request.user.id).order_by('-created_on')
+   return render(request,'app/order_history.html', {'orders':orders})
+
+def change_password(request):
+   return render(request,'app/change_password.html')
+
+def my_profile(request):
+   return render(request,'app/my_profile.html')
+
+

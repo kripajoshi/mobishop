@@ -20,7 +20,13 @@ urlpatterns = [
     path('add_to_cart', views.add_to_cart, name='add_to_cart'),
     path('remove_cart_item', views.remove_cart_item, name='remove_cart_item'),
     path('update_cart_item', views.update_cart_item, name='update_cart_item'),
-
+    path('process_checkout', views.process_checkout, name='process_checkout'),
+    path('checkout',views.checkout, name='checkout'),
+    path('checkout_success',views.checkout_success, name='checkout_success'),
+    path('myaccount', views.myaccount, name='myaccount'),
+    path('orderhistory', views.order_history, name='order_history'),
+    path('changepassword', views.change_password, name='change_password'),
+    path('myprofile', views.my_profile, name='my_profile'),
     path('login/',
          LoginView.as_view
          (
