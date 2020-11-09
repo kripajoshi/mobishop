@@ -44,3 +44,16 @@ input[type="checkbox"].input-validation-error {
 .jumbotron {
     padding:0.5rem 0;
 }
+.helptext {
+    display:block;
+    font-size: 0.9rem;
+    color: #808080;
+}
+label {
+    width: 190px;
+}
+.errorlist {
+    display: block;
+    font-size: 0.9rem;
+    color: red;
+}

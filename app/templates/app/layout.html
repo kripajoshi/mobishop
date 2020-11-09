@@ -45,9 +45,6 @@
                 </div>
             </form>
             {% include 'app/loginpartial.html' %}
-            {% if user.is_authenticated %}
-            | <a href="{% url 'cart' %}">Cart <span class="badge badge-pill badge-danger">{{ request.no_of_cartItems }}</span></a>
-            {% endif %}
         </div>
     </nav>
 

@@ -1,0 +1,43 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+
+<h2>{{ title }}</h2>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <div class="container">
+            <form method="POST">
+                {% csrf_token %}
+                {{form}}
+                {% if request.GET.redirect_to %}
+                <input type="hidden" name="next" value="{{ request.GET.redirect_to }}" />
+                {% else %}
+                <input type="hidden" name="next" value="/" />
+                {% endif %}
+                <br />
+                <button class="btn btn-outline-success" type="submit">Sign Up</button>
+            </form>
+            <br /><br />
+            If you already have an account
+            {% if request.GET.redirect_to %}
+                <a href="/login?redirect_to={{ request.GET.redirect_to }}"><strong>login</strong></a> 
+            {% else %}
+                <a href="/login"><strong>login</strong></a> 
+            {% endif %} instead.
+        </div>
+    </div>
+    <div class="col-md-4">
+        <section id="socialLoginForm"></section>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+    {% load static %}
+<script src="{% static 'app/scripts/jquery.validate.min.js' %}"></script>
+
+{% endblock %}

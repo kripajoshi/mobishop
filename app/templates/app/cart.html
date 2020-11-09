@@ -19,8 +19,12 @@
         <form method="post" action="/update_cart_item">
             {% csrf_token %}
             <input type="hidden" name="cart_item_id" value="{{ obj.id }}" />
-            <input type="text" name="quantity" value="{{obj.quantity}}" />
-            <button class="btn btn-outline-warning my-2 my-sm-0">Save</button>
+             <div class="input-group mb-3">
+                <input type="text" name="quantity"  class="form-control" value="{{obj.quantity}}" />
+                 <div class="input-group-append">
+                    <button class="btn btn-outline-warning my-2 my-sm-0">Save</button>
+                 </div>
+             </div>
         </form>
     </td>
     <td>${{ obj.unit_price }}</td>
@@ -31,7 +35,12 @@
         <form method="post" action="/remove_cart_item">
             {% csrf_token %}
             <input type="hidden" name="cart_item_id" value="{{ obj.id }}" />
-            <button type="submit" class="btn btn-outline-danger my-2 my-sm-0">Remove</button>
+            <button type="submit" class="btn btn-outline-danger my-2 my-sm-0">
+                Remove
+                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
+                </svg>
+            </button>
         </form>
     </td>
     <td>

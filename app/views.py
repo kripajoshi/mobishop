@@ -7,6 +7,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpRequest
 from app.models import Product, Cart, CartItem, Address, Order, OrderItem
 from django.db.models import Sum
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth import logout, authenticate, login
 
 def home(request):
     """Renders the home page."""
@@ -142,10 +144,19 @@ def checkout(request):
        address = addresses[0]
    else:
        address = Address()   
-   return render(request,'app/checkout.html', { 'a': address})
+   return render(request,'app/checkout.html', 
+          {
+              'a': address,
+              'title':'Checkout', 
+              'year':datetime.now().year                                 
+          })
 
 def checkout_success(request):
-   return render(request,'app/checkout_success.html')
+   return render(request,'app/checkout_success.html',
+          {
+            'title':'Thank you for purchasing from us.', 
+            'year':datetime.now().year
+          })
 
 def process_checkout(request):
     addresses = Address.objects.filter(user_id=request.user.id)
@@ -194,11 +205,14 @@ def process_checkout(request):
     return redirect(checkout_success)
 
 def myaccount(request):
-   return render(request,'app/myaccount.html')
+   return render(request,'app/myaccount.html', {
+       'title':'My Account', 
+       'year':datetime.now().year
+       })
 
 def order_history(request):
    orders = Order.objects.filter(user_id=request.user.id).order_by('-created_on')
-   return render(request,'app/order_history.html', {'orders':orders})
+   return render(request,'app/order_history.html', {'orders':orders, 'title':'Order History', 'year':datetime.now().year})
 
 def change_password(request):
    return render(request,'app/change_password.html')
@@ -207,3 +221,31 @@ def my_profile(request):
    return render(request,'app/my_profile.html')
 
 
+def register(request):
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            username = form.cleaned_data.get('username')
+            login(request, user)
+            if request.POST.get('next'):
+                return redirect(request.POST.get('next'))
+            else:
+                return redirect(home)
+
+        else:
+            for msg in form.error_messages:
+                print(form.error_messages[msg])
+
+            return render(request = request,
+                          template_name = "app/register.html",
+                          context={"form":form,'title': 'Register',
+                           'year':datetime.now().year})
+
+    form = UserCreationForm
+    return render(request = request,
+                  template_name = "app/register.html",
+                  context={"form":form, 
+                           'title': 'Register',
+                           'year':datetime.now().year
+                  })

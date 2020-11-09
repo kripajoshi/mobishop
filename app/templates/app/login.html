@@ -35,6 +35,12 @@
                 {% if form.errors %}
                 <p class="validation-summary-errors">Please enter a correct user name and password.</p>
                 {% endif %}
+                If you do not have an account 
+                {% if request.GET.redirect_to %}
+                    <a href="/register/?redirect_to={{ request.GET.redirect_to }}"><strong>register</strong></a> 
+                {% else %}
+                   <a href="/register/"><strong>register</strong></a> 
+                {% endif %} instead.
             </form>
         </section>
     </div>

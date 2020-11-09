@@ -27,6 +27,7 @@ urlpatterns = [
     path('orderhistory', views.order_history, name='order_history'),
     path('changepassword', views.change_password, name='change_password'),
     path('myprofile', views.my_profile, name='my_profile'),
+    path('register/', views.register, name='register'),
     path('login/',
          LoginView.as_view
          (
