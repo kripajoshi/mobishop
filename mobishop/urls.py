@@ -28,6 +28,10 @@ urlpatterns = [
     path('changepassword', views.change_password, name='change_password'),
     path('myprofile', views.my_profile, name='my_profile'),
     path('register/', views.register, name='register'),
+    path('process_change_password', views.process_change_password, name='process_change_password'),
+    path('process_my_profile', views.process_my_profile, name='process
+    
+    _my_profile'),
     path('login/',
          LoginView.as_view
          (

@@ -9,7 +9,7 @@ from app.models import Product, Cart, CartItem, Address, Order, OrderItem
 from django.db.models import Sum
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import logout, authenticate, login
-
+from django.contrib.auth.models import User
 def home(request):
     """Renders the home page."""
     assert isinstance(request, HttpRequest)
@@ -217,9 +217,24 @@ def order_history(request):
 def change_password(request):
    return render(request,'app/change_password.html')
 
-def my_profile(request):
-   return render(request,'app/my_profile.html')
+def process_change_password(request):
+    user= authenticate(username=request.user.username, password=request.POST.get('current_password'))
+    if user is not None:
+        if request.POST.get('new_password')==request.POST.get('confirm_new_password'):
+            user.set_password(request.POST.get('new_password'))
+            user.save()
+    return redirect(change_password)
 
+def my_profile(request):
+   user=User.objects.get(pk=request.user.id)
+   return render(request,'app/my_profile.html',{'user':user})
+
+def process_my_profile(request):
+    user=User.objects.get(pk=request.user.id)
+    user.first_name=request.POST.get('first_name')
+    user.last_name=request.POST.get('last_name')
+    user.save()
+    return redirect (my_profile)
 
 def register(request):
     if request.method == "POST":

@@ -2,4 +2,17 @@
 
 {% block content %}
 
+ <form method="POST" action="/process_my_profile">
+        {% csrf_token%}
+       <div><label>First Name</label></div>
+       <input type="text" name="first_name" value="{{user.first_name}}"/>
+       <div><label>Last Name</label></div>
+       <input type="text" name="last_name" value="{{user.last_name}}"/>
+       <button class="btn btn-outline-success" type="submit">Submit</button>
+             </form>
+
+
+
+
+
 {% endblock %}
